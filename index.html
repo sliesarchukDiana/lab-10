@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialFinder - Пошук друзів</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="auth-section" class="auth-wrapper">
+    <div class="form-container">
+        <div class="auth-tabs">
+            <button class="tab-btn active" data-tab="login">Вхід</button>
+            <button class="tab-btn" data-tab="register">Реєстрація</button>
+        </div>
+
+        <form id="login" class="form-content active" data-form="login" novalidate>
+            <h2>З поверненням!</h2>
+            <div class="form-group">
+                <label for="login-username">Логін</label>
+                <input type="text" id="login-username" name="username" placeholder="Введіть логін">
+                <small class="error-text"></small>
+            </div>
+            <div class="form-group password-group">
+                <label for="login-password">Пароль</label>
+                <div class="input-wrapper">
+                    <input type="password" id="login-password" name="password" placeholder="Введіть пароль">
+                    <button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+                </div>
+                <small class="error-text"></small>
+            </div>
+            <button type="submit" class="submit-btn"><i class="fas fa-sign-in-alt"></i> Увійти</button>
+        </form>
+
+        <form id="register" class="form-content" style="display: none;" data-form="register" novalidate>
+            <h2>Створити акаунт</h2>
+            <div class="form-group">
+                <label for="reg-name">Повне ім'я</label>
+                <input type="text" id="reg-name" name="name" placeholder="Наприклад: Іван Іванов">
+                <small class="error-text"></small>
+            </div>
+            <div class="form-group">
+                <label for="reg-email">Email</label>
+                <input type="email" id="reg-email" name="email" placeholder="email@example.com">
+                <small class="error-text"></small>
+            </div>
+            <div class="form-group password-group">
+                <label for="reg-password">Пароль</label>
+                <div class="input-wrapper">
+                    <input type="password" id="reg-password" name="password" placeholder="Мінімум 6 символів">
+                    <button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+                </div>
+                <small class="error-text"></small>
+            </div>
+            <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i> Зареєструватися</button>
+        </form>
+    </div>
+</div>
+
+<div id="app-container" class="app-wrapper" style="display: none;">
+    <header class="app-header">
+        <div class="logo"><i class="fas fa-users"></i> SocialFinder</div>
+        <div class="user-controls">
+            <span id="current-user-name"></span>
+            <button id="logout-btn" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i> Вийти</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <aside class="sidebar">
+            <div class="control-group">
+                <label for="search-input"><i class="fas fa-search"></i> Пошук (Ім'я, Прізвище)</label>
+                <input type="search" id="search-input" placeholder="Наприклад: Noah...">
+            </div>
+
+            <div class="control-group">
+                <h3><i class="fas fa-filter"></i> Фільтри</h3>
+                <div class="filter-grid">
+                    <input type="number" id="min-age" placeholder="Мін. вік" min="0">
+                    <input type="number" id="max-age" placeholder="Макс. вік" min="0">
+                    <input type="number" id="birth-year" placeholder="Рік народження (напр. 1995)">
+                    <input type="text" id="location-input" placeholder="Місто / Країна">
+                    <input type="text" id="email-input" placeholder="@example.com">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3><i class="fas fa-venus-mars"></i> Стать</h3>
+                <div class="radio-group-filters">
+                    <label><input type="radio" name="gender" value="all" checked> Всі</label>
+                    <label><input type="radio" name="gender" value="male"> Чоловіки</label>
+                    <label><input type="radio" name="gender" value="female"> Жінки</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3><i class="fas fa-sort"></i> Сортувати за</h3>
+                <select id="sort-select" class="sort-select">
+                    <option value="name-asc">Ім'я (A-Z)</option>
+                    <option value="name-desc">Ім'я (Z-A)</option>
+                    <option value="age-asc">Вік (Зростання)</option>
+                    <option value="age-desc">Вік (Спадання)</option>
+                    <option value="reg-new">Нові користувачі</option>
+                    <option value="reg-old">Старі користувачі</option>
+                </select>
+            </div>
+
+            <div class="sidebar-actions">
+                <button id="selected-only-btn" class="btn btn-outline"><i class="fas fa-heart"></i> Тільки обрані</button>
+                <button id="reset-btn" class="btn btn-danger"><i class="fas fa-trash-restore"></i> Скинути всі фільтри</button>
+            </div>
+        </aside>
+
+        <section class="users-section">
+            <div class="status-bar">
+                <span id="active-filters">Фільтри не застосовані</span>
+                <span id="stats-info">Знайдено: 0 | Обрано: 0</span>
+            </div>
+
+            <div id="users-grid" class="users-grid"></div>
+
+            <div id="loader" class="loader" style="display: none;"><i class="fas fa-spinner fa-spin"></i> Завантаження...</div>
+            <div id="pagination" class="pagination"></div>
+            <div id="sentinel" style="height: 10px;"></div>
+        </section>
+    </main>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
